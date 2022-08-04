@@ -1,0 +1,60 @@
+body {
+  background-color: #e4f8fc;
+  padding: 0;
+  margin: 0;
+}
+
+h1 {
+  width: 100%;
+  text-align: center;
+}
+
+#inputForm {
+  display: flex;
+  width: 100%;
+  align-items: center;
+  margin: 10px;
+}
+
+#table {
+  text-align: center;
+}
+
+#table th {
+  text-align: center;
+}
+
+.ui-datatable thead th {
+  width: 100%;
+  text-align: center;
+}
+
+.ui-datatable-header ui-widget-header ui-corner-top {
+  display: flex;
+  text-align: center;
+}
+
+ul {
+  list-style-type: none;
+  margin: 0;
+  padding: 0;
+  overflow: hidden;
+  background-color: #7ddcf0;
+}
+
+li {
+  float: left;
+}
+
+li a {
+  display: block;
+  color: white;
+  text-align: center;
+  padding: 14px 16px;
+  text-decoration: none;
+}
+
+/* Change the link color to #111 (black) on hover */
+li a:hover {
+  background-color: #50cfeb;
+}

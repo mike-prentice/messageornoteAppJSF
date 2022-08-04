@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html
+  lang="en"
+  xmlns="http://www.w3.org/1999/xhtml"
+  xmlns:f="http://xmlns.jcp.org/jsf/core"
+  xmlns:h="http://xmlns.jcp.org/jsf/html"
+  xmlns:p="http://primefaces.org/ui"
+>
+  <h:head>
+    <h:outputStylesheet library="css" name="style.css" />
+    <title>Hello World</title>
+  </h:head>
+  <h:body>
+    <div id="container">
+      <ul>
+        <li><h:link value="Home" outcome="test" /></li>
+        <li><h:link value="Login" outcome="login" /></li>
+        <li><h:link value="Register" outcome="register" /></li>
+        <li><h:link value="Logout" outcome="logout" /></li>
+      </ul>
+      <h1>Messager</h1>
+      <p:messages id="msg"></p:messages>
+      <h:form id="inputForm">
+        <p:inputText
+          id="inputMessage"
+          class="inputfield"
+          value="#{bean.message.text}"
+          required="true"
+        >
+          <f:validateLength minimum="2" />
+        </p:inputText>
+        <p:message id="input_m" for="inputMessage" />
+        <p:commandButton value="Add Message" action="#{bean.submit}">
+        </p:commandButton>
+      </h:form>
+      <h:form id="tableForm" onkeypress="return event.keyCode != 13;">
+        <p:dataTable
+          id="table"
+          value="#{bean.messages}"
+          var="message"
+          rowKey="#{message.id}"
+          paginator="true"
+          paginatorPosition="top"
+          rows="10"
+          allowUnsorting="true"
+          sortMode="single"
+          editable="true"
+          selection="#{bean.selectedMessage}"
+          selectionMode="single"
+        >
+          <f:facet name="header" id="table-header">Your Messages</f:facet>
+          <p:column headerText="Id" sortBy="#{message.id}">
+            <h:outputText value="#{message.id}" />
+          </p:column>
+          <p:column headerText="Message" sortBy="#{message.text}">
+            <h:outputText value="#{message.text}" />
+          </p:column>
+          <p:column headerText="Delete Message">
+            <p:commandButton
+              value="Delete Message"
+              actionListener="#{bean.deleteMessage(message.id)}"
+              process="@this"
+              update=":tableForm:table"
+            >
+            </p:commandButton>
+          </p:column>
+          <p:column headerText="Edit Message">
+            <p:commandButton
+              value="Edit Message"
+              action="#{bean.setSelectedMessage(message)}"
+              oncomplete="PF('MessageDialog').show();"
+              update=":tableForm"
+            >
+              <f:setPropertyActionListener
+                value="#{message}"
+                target="#{bean.selectedMessage}"
+              />
+            </p:commandButton>
+          </p:column>
+        </p:dataTable>
+        <p:commandButton
+          value="Logout"
+          action="#{login.logout}"
+          process="@this"
+        >
+        </p:commandButton>
+        <p:dialog
+          header="Message Detail"
+          widgetVar="MessageDialog"
+          resizable="false"
+          showEffect="fade"
+          hideEffect="fade"
+          height="100"
+        >
+          <p:inputText id="editInput" value="#{bean.selectedMessage.text}" />
+          <p:commandButton
+            value="Submit"
+            action="#{bean.save(bean.selectedMessage.id, bean.selectedMessage.text)}"
+            process="@form:tableForm"
+            oncomplete="PF('MessageDialog').hide();"
+            update=":tableForm:table"
+          >
+          </p:commandButton>
+        </p:dialog>
+      </h:form>
+    </div>
+  </h:body>
+</html>
