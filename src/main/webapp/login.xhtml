@@ -12,12 +12,17 @@
   </h:head>
   <h:body>
     <div id="container">
-      <ul>
-        <li><h:link value="Home" outcome="test" /></li>
-        <li><h:link value="Login" outcome="login" /></li>
-        <li><h:link value="Register" outcome="register" /></li>
-        <li><h:link value="Logout" outcome="logout" /></li>
-      </ul>
+      <nav>
+        <ul>
+          <li><h:link value="Profile" outcome="newpage" /></li>
+          <li><h:link value="Logout" outcome="login" /></li>
+        </ul>
+      </nav>
+      <div id="globalmsg">
+        <p:messages id="messages" showDetail="true" closable="true">
+          <p:autoUpdate />
+        </p:messages>
+      </div>
       <h:form id="loginForm">
         <p:panelGrid columns="3">
           <h:outputLabel value="Username" />
@@ -41,14 +46,14 @@
 
           <p:commandButton
             value="Login"
-            render="#{login.showRegisterBtn eq false}"
             action="#{login.validateUsernamePassword}"
-            update="msglog msglog1"
+            rendered="#{!login.showRegisterBtn}"
+            update="msglog msglog1 messages"
             id="loginBtn"
           />
           <p:commandButton
             value="Register"
-            render="#{login.showRegisterBtn eq true}"
+            rendered="#{login.showRegisterBtn}"
             action="#{login.register}"
             update="msglog msglog1"
             id="registerBtn"

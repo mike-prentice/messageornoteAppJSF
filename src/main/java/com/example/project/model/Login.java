@@ -27,7 +27,7 @@ public class Login implements Serializable {
 	private String user;
 	private boolean showRegisterBtn = false;
 
-	public boolean isShowRegisterBtn() {
+	public boolean getShowRegisterBtn() {
 		return showRegisterBtn;
 	}
 
@@ -62,6 +62,7 @@ public class Login implements Serializable {
 	//validate login
 	public String validateUsernamePassword() {
 		boolean valid = LoginDAO.validate(user, pwd);
+		System.out.println(showRegisterBtn);
 		System.out.println(user);
 		if (valid) {
 			HttpSession session = SessionUtils.getSession();
@@ -69,22 +70,22 @@ public class Login implements Serializable {
 			return "test";
 		} else {
 			showRegisterBtn = true;
+			System.out.println(showRegisterBtn);
 			FacesContext.getCurrentInstance().addMessage(
-					"pass:msglog1",
-					new FacesMessage(FacesMessage.SEVERITY_WARN,
-							"Login Not Found",
+					null,
+					new FacesMessage(FacesMessage.SEVERITY_ERROR,
+							"Login Not Found: ",
 							"Please register a new account"));
 			return "login";
 		}
 	}
 
 	public String register() {
-		if (RegisterDao.register(user, pwd)) {
+		RegisterDao.register(user, pwd);
 			System.out.println(user.toString());
+			validateUsernamePassword();
 			return "test";
-		} else {
-			return "login";
-		}
+		
 	}
 
 	//logout event, invalidate session
