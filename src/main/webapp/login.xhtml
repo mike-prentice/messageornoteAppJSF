@@ -32,7 +32,7 @@
             requiredMessage="Please enter a user name"
             id="username"
           />
-          <p:message for="username" class="error_message" id="msglog" />
+          <p:message for="username" id="msglog" />
 
           <h:outputLabel value="Password" />
           <p:inputText
@@ -42,7 +42,7 @@
             id="pass"
             type="password"
           />
-          <p:message for="pass" class="error_message" id="msglog1" />
+          <p:message for="pass" id="msglog1" />
 
           <p:commandButton
             value="Login"
@@ -57,6 +57,13 @@
             action="#{login.register}"
             update="msglog msglog1"
             id="registerBtn"
+          />
+          <p:commandButton
+            value="Cancel"
+            rendered="#{login.showRegisterBtn}"
+            action="#{login.cancel}"
+            update="msglog msglog1"
+            id="cancelBtn"
           />
         </p:panelGrid>
       </h:form>

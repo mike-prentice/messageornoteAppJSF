@@ -55,9 +55,9 @@ public class Bean {
 		return "/test.xhtml?faces-redirect=true";
 	}
 
-	public void deleteMessage(Long id) {
+	public String deleteMessage(Long id) {
 		messageService.delete(id);
-		
+		return "/test.xhtml?faces-redirect=true";
 	}
 
 	public Message getMessage() {

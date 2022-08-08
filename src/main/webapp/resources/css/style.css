@@ -34,7 +34,7 @@ h1 {
   text-align: center;
 }
 
-nav {
+nav ul {
   list-style-type: none;
   margin: 0;
   padding: 0;
@@ -54,11 +54,15 @@ li a {
   text-decoration: none;
 }
 
-/* Change the link color to #111 (black) on hover */
+/* Change the link color to on hover */
 li a:hover {
   background-color: #50cfeb;
 }
 
-#globalMsg {
-  width: 100%;
+#globalmsg {
+  width: 50%;
+}
+
+#logoutBtn {
+  margin-top: 10px;
 }

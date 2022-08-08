@@ -72,11 +72,11 @@ public class Login implements Serializable {
 			showRegisterBtn = true;
 			System.out.println(showRegisterBtn);
 			FacesContext.getCurrentInstance().addMessage(
-					null,
+					"globalmessage:messages",
 					new FacesMessage(FacesMessage.SEVERITY_ERROR,
 							"Login Not Found: ",
 							"Please register a new account"));
-			return "login";
+			return "/login.xhtml?faces-redirect=true";
 		}
 	}
 
@@ -84,6 +84,7 @@ public class Login implements Serializable {
 		RegisterDao.register(user, pwd);
 			System.out.println(user.toString());
 			validateUsernamePassword();
+			showRegisterBtn = false;
 			return "test";
 		
 	}
@@ -92,7 +93,13 @@ public class Login implements Serializable {
 	public String logout() {
 		HttpSession session = SessionUtils.getSession();
 		session.invalidate();
-		return "login";
+		return "/login.xhtml?faces-redirect=true";
+	}
+
+	public String cancel() {
+		HttpSession session = SessionUtils.getSession();
+		session.invalidate();
+		return "/login.xhtml?faces-redirect=true";
 	}
 }
 
