@@ -72,7 +72,7 @@ public class Login implements Serializable {
 			showRegisterBtn = true;
 			System.out.println(showRegisterBtn);
 			FacesContext.getCurrentInstance().addMessage(
-					"globalmessage:messages",
+					null,
 					new FacesMessage(FacesMessage.SEVERITY_ERROR,
 							"Login Not Found: ",
 							"Please register a new account"));
