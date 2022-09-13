@@ -8,7 +8,7 @@
 >
   <h:head>
     <h:outputStylesheet library="css" name="style.css" />
-    <title>Hello World</title>
+    <title>Message App</title>
   </h:head>
   <h:body>
     <div id="container">
@@ -18,7 +18,7 @@
           <li><h:link value="Logout" outcome="login" /></li>
         </ul>
       </nav>
-      <h1>Messager</h1>
+      <h1>Welcome #{login.user}, here are your messages!</h1>
       <p:messages id="msg"></p:messages>
       <h:form id="inputForm">
         <p:inputText
@@ -42,11 +42,9 @@
           paginator="true"
           paginatorPosition="top"
           rows="10"
-          allowUnsorting="true"
-          sortMode="single"
+          sortMode="cell"
           editable="true"
           selection="#{bean.selectedMessage}"
-          selectionMode="single"
           multiViewState="true"
         >
           <f:facet name="header" id="table-header">Your Messages</f:facet>
@@ -56,21 +54,23 @@
           <p:column headerText="Message" sortBy="#{message.text}">
             <h:outputText value="#{message.text}" />
           </p:column>
-          <p:column headerText="Delete Message">
+
+          <p:column>
             <p:commandButton
-              value="Delete Message"
-              actionListener="#{bean.deleteMessage(message.id)}"
               process="@this"
-              update=":tableForm:table"
-            >
-            </p:commandButton>
-          </p:column>
-          <p:column headerText="Edit Message">
-            <p:commandButton
-              value="Edit Message"
-              action="#{bean.setSelectedMessage(message)}"
               oncomplete="PF('MessageDialog').show();"
-              update=":tableForm"
+              syleClass="edit-button rounded-button ui-button-success"
+              icon="pi pi-pencil"
+            >
+              <f:setPropertyActionListener
+                value="#{message}"
+                target="#{bean.selectedMessage}"
+              />
+            </p:commandButton>
+            <p:commandButton
+              icon="pi pi-trash"
+              process="@this"
+              oncomplete="PF('deleteDialog').show();"
             >
               <f:setPropertyActionListener
                 value="#{message}"
@@ -86,6 +86,8 @@
           id="logoutBtn"
         >
         </p:commandButton>
+      </h:form>
+      <h:form id="dialogForm">
         <p:dialog
           header="Message Detail"
           widgetVar="MessageDialog"
@@ -96,14 +98,45 @@
         >
           <p:inputText id="editInput" value="#{bean.selectedMessage.text}" />
           <p:commandButton
-            value="Submit"
-            action="#{bean.save(bean.selectedMessage.id, bean.selectedMessage.text)}"
-            process="@form:tableForm"
+            value="Save"
+            actionListener="#{bean.save(bean.selectedMessage.id, bean.selectedMessage.text)}"
+            process=" dialogForm @this"
             oncomplete="PF('MessageDialog').hide();"
-            update=":tableForm:table"
+            update="dialogForm"
           >
           </p:commandButton>
+          <p:commandButton
+            value="Cancel"
+            type="button"
+            styleClass="ui-button-secondary"
+            icon="pi pi-times"
+            onclick="PF('MessageDialog').hide()"
+          />
         </p:dialog>
+        <p:confirmDialog
+          widgetVar="deleteDialog"
+          showEffect="fade"
+          width="300"
+          message="Delete this message?"
+          header="Confirm"
+          severity="warn"
+          id="confirm"
+        >
+          <p:commandButton
+            value="Yes"
+            icon="pi pi-check"
+            actionListener="#{bean.deleteMessage}"
+            process="@this"
+            oncomplete="PF('deleteDialog').hide()"
+          />
+          <p:commandButton
+            value="No"
+            type="button"
+            styleClass="ui-button-secondary"
+            icon="pi pi-times"
+            onclick="PF('deleteDialog').hide()"
+          />
+        </p:confirmDialog>
       </h:form>
     </div>
   </h:body>

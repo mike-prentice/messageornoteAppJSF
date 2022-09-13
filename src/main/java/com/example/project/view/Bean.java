@@ -1,5 +1,6 @@
 package com.example.project.view;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -7,9 +8,11 @@ import javax.annotation.PostConstruct;
 import javax.enterprise.context.RequestScoped;
 import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
+import javax.faces.view.ViewScoped;
 import javax.inject.Inject;
 import javax.inject.Named;
 
+import org.primefaces.PrimeFaces;
 import org.primefaces.model.SortMeta;
 import org.primefaces.model.SortOrder;
 
@@ -17,8 +20,8 @@ import com.example.project.model.Message;
 import com.example.project.service.MessageService;
 
 @Named
-@RequestScoped
-public class Bean {
+@ViewScoped
+public class Bean implements Serializable {
 
 	private Message message = new Message();
 	private List<Message> messages;
@@ -34,7 +37,10 @@ public class Bean {
 
 	@PostConstruct
 	public void init() {
+		
 		messages = messageService.list();
+		
+		
 		
 		sortBy = new ArrayList<>();
 		sortBy.add(SortMeta.builder().field("id").order(SortOrder.ASCENDING).build());
@@ -50,14 +56,17 @@ public class Bean {
 		return "/test.xhtml?faces-redirect=true";
 	}
 	
-	public String save(Long id, String text) {
+	public void save(Long id, String text) {
+		System.out.println(id);
+		System.out.println(text);
 		messageService.save(id, text);
-		return "/test.xhtml?faces-redirect=true";
+		PrimeFaces.current().ajax().update("tableForm:table");
 	}
 
-	public String deleteMessage(Long id) {
-		messageService.delete(id);
-		return "/test.xhtml?faces-redirect=true";
+	public void deleteMessage() {
+		this.messages.remove(this.selectedMessage);
+		this.selectedMessage = null;
+		PrimeFaces.current().ajax().update("tableForm:table");
 	}
 
 	public Message getMessage() {
@@ -72,8 +81,8 @@ public class Bean {
 		return selectedMessage;
 	}
 
-	public void setSelectedMessage(Message message) {
-		this.selectedMessage = message;
+	public void setSelectedMessage(Message selectedMessage) {
+		this.selectedMessage = selectedMessage;
 	}
 
 	public List<SortMeta> getSortBy() {

@@ -22,6 +22,10 @@ public class MessageService {
 		return entityManager.createQuery("FROM Message m", Message.class).getResultList();
 	}
 
+	public List<Message> listUserMessages() {
+		return entityManager.createQuery("SELECT messages FROM Message m JOIN users u ON u.id = m.id", Message.class).getResultList();
+	}
+
 	public void delete(Long id) {
 		System.out.println(id);
 		Message message = findById(id);
@@ -31,7 +35,8 @@ public class MessageService {
 	public void save(Long id, String text) {
 		Message message = findById(id);
 		message.setText(text);
-		entityManager.merge(message);		
+		entityManager.merge(message);
+		System.out.println(message.getText());		
 	}
 
 	public Message findById(Long id) {
@@ -40,4 +45,5 @@ public class MessageService {
 		return (Message) findOne.getSingleResult();
 
 	}
+
 }
