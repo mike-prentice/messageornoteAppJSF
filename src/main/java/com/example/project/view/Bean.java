@@ -27,12 +27,10 @@ public class Bean implements Serializable {
 	private List<Message> messages;
 	private List<SortMeta> sortBy;
 	private Message selectedMessage;
-	
-	@Inject
-	private MessageService messageService;
 
 	@Inject
-	private SessionUtils sessionUtils;
+	private MessageService messageService;
+	
 
 	public void setMessageService(MessageService messageService) {
 		this.messageService = messageService;
@@ -40,11 +38,9 @@ public class Bean implements Serializable {
 
 	@PostConstruct
 	public void init() {
-		
+
 		messages = messageService.list();
-		
-		
-		
+
 		sortBy = new ArrayList<>();
 		sortBy.add(SortMeta.builder().field("id").order(SortOrder.ASCENDING).build());
 
@@ -58,7 +54,7 @@ public class Bean implements Serializable {
 		FacesContext.getCurrentInstance().addMessage("inputForm:inputMessage", new FacesMessage("Message Added!"));
 		return "/test.xhtml?faces-redirect=true";
 	}
-	
+
 	public void save(Long id, String text) {
 		System.out.println(id);
 		System.out.println(text);
@@ -94,12 +90,12 @@ public class Bean implements Serializable {
 
 	public String getSessionId() {
 		String id = SessionUtils.getUserId();
+		System.out.println(id);
 		return id;
 	}
 
-	//create selectEditText method (String return)
-	//if null, return ""
+	// create selectEditText method (String return)
+	// if null, return ""
 	// else return selectedMessage.text
-	
-	
+
 }
