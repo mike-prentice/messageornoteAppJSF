@@ -1,11 +1,15 @@
 package com.example.project.model;
 
 
+import java.io.Serializable;
+
 import javax.faces.context.FacesContext;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
-public class SessionUtils {
+public class SessionUtils implements Serializable {
+
+	private static final long serialVersionUID = 1L;
 
 	public static HttpSession getSession() {
 		return (HttpSession) FacesContext.getCurrentInstance()

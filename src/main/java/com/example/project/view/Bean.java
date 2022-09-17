@@ -5,7 +5,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import javax.annotation.PostConstruct;
-import javax.enterprise.context.RequestScoped;
 import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
 import javax.faces.view.ViewScoped;
@@ -17,6 +16,7 @@ import org.primefaces.model.SortMeta;
 import org.primefaces.model.SortOrder;
 
 import com.example.project.model.Message;
+import com.example.project.model.SessionUtils;
 import com.example.project.service.MessageService;
 
 @Named
@@ -30,6 +30,9 @@ public class Bean implements Serializable {
 	
 	@Inject
 	private MessageService messageService;
+
+	@Inject
+	private SessionUtils sessionUtils;
 
 	public void setMessageService(MessageService messageService) {
 		this.messageService = messageService;
@@ -87,6 +90,11 @@ public class Bean implements Serializable {
 
 	public List<SortMeta> getSortBy() {
 		return sortBy;
+	}
+
+	public String getSessionId() {
+		String id = SessionUtils.getUserId();
+		return id;
 	}
 
 	//create selectEditText method (String return)
