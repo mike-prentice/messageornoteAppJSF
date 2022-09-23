@@ -6,10 +6,16 @@ import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
+
+
+import com.example.project.dao.MessageDAO;
 import com.example.project.model.Message;
 
 @Stateless
 public class MessageService {
+
+	
+	MessageDAO messageDAO = new MessageDAO();
 
 	@PersistenceContext
 	private EntityManager entityManager;
@@ -18,8 +24,9 @@ public class MessageService {
 		entityManager.persist(message);
 	}
 
-	public List<Message> list() {
-		return entityManager.createQuery("FROM Message m", Message.class).getResultList();
+	public List<Message> list(String user) {
+		
+		return messageDAO.getMessages(user);
 	}
 
 	public List<Message> listUserMessages() {
@@ -27,7 +34,6 @@ public class MessageService {
 	}
 
 	public void delete(Long id) {
-		System.out.println(id);
 		Message message = findById(id);
 		entityManager.remove(message);
 	}
@@ -36,7 +42,7 @@ public class MessageService {
 		Message message = findById(id);
 		message.setText(text);
 		entityManager.merge(message);
-		System.out.println(message.getText());		
+				
 	}
 
 	public Message findById(Long id) {

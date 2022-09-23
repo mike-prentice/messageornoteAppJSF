@@ -10,7 +10,6 @@ import com.example.project.util.DataConnect;
 public class RegisterDao {
 	
 	public static boolean checkUName(String user) {
-		System.out.println(user);
 		Connection con = null;
 		PreparedStatement ps = null;
 		
@@ -37,8 +36,6 @@ public class RegisterDao {
 	
 	
 	public static boolean register(String user, String password) {
-		System.out.println(user);
-		System.out.println(password);
 		if(!checkUName(user)) {
 		Connection con = null;
 		PreparedStatement ps = null;

@@ -2,38 +2,31 @@ package com.example.project.model;
 
 import java.io.Serializable;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.ForeignKey;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.Lob;
-import javax.validation.constraints.NotNull;
+import javax.enterprise.context.SessionScoped;
+import javax.inject.Named;
 
-@Entity
+
+import com.example.project.dao.MessageDAO;
+
+@Named
+@SessionScoped
 public class Message implements Serializable {
+
+	MessageDAO messageDAO = new MessageDAO();
 
 	private static final long serialVersionUID = 1L;
 
-	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
+	private String text;
+	private String userName;
 
-
-	private String username;
-
-	public String getUsername() {
-		return username;
+	public String getUserName() {
+		return userName;
 	}
 
-	public void setUsername(String username) {
-		this.username = username;
+	public void setUserName(String userName) {
+		this.userName = userName;
 	}
-
-	@Column(nullable = false)
-	@Lob
-	private @NotNull String text;
 
 	public Long getId() {
 		return id;
@@ -51,10 +44,7 @@ public class Message implements Serializable {
 		this.text = text;
 	}
 
-	public Message() {
-		super();
-	}
-
+	
 	@Override
 	public int hashCode() {
 		int hash = 7;
@@ -76,5 +66,9 @@ public class Message implements Serializable {
 		}
 		return true;
 	}
-	// Add/generate getters and setters.
+
+	public void createMessage(String userName, String text) {
+		messageDAO.saveMessage(userName, text);
+	}
+	
 }

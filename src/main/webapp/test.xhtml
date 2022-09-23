@@ -18,7 +18,7 @@
           <li><h:link value="Logout" outcome="login" /></li>
         </ul>
       </nav>
-      <h1>Welcome #{bean.getSessionId()}, here are your messages!</h1>
+      <h1>Welcome #{login.user}, here are your messages!</h1>
       <p:messages id="msg"></p:messages>
       <h:form id="inputForm">
         <p:inputText
@@ -32,7 +32,7 @@
         <p:message id="input_m" for="inputMessage" />
         <p:commandButton
           value="Add Message"
-          action="#{bean.submit(bean.message.text, bean.getSessionId)}"
+          action="#{bean.submit()}"
         >
         </p:commandButton>
       </h:form>

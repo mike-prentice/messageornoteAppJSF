@@ -1,8 +1,5 @@
 package com.example.project.model;
 
-
-
-
 import java.io.Serializable;
 
 import javax.enterprise.context.SessionScoped;
@@ -13,9 +10,6 @@ import javax.servlet.http.HttpSession;
 
 import com.example.project.dao.LoginDAO;
 import com.example.project.dao.RegisterDao;
-
-
-
 @Named
 @SessionScoped
 public class Login implements Serializable {
@@ -23,7 +17,6 @@ public class Login implements Serializable {
 	private static final long serialVersionUID = 1094801825228386363L;
 	
 	private String pwd;
-	private String msg;
 	private String user;
 	private boolean showRegisterBtn = false;
 
@@ -43,14 +36,6 @@ public class Login implements Serializable {
 		this.pwd = pwd;
 	}
 
-	public String getMsg() {
-		return msg;
-	}
-
-	public void setMsg(String msg) {
-		this.msg = msg;
-	}
-
 	public String getUser() {
 		return user;
 	}
@@ -62,15 +47,13 @@ public class Login implements Serializable {
 	//validate login
 	public String validateUsernamePassword() {
 		boolean valid = LoginDAO.validate(user, pwd);
-		System.out.println(showRegisterBtn);
-		System.out.println(user);
 		if (valid) {
 			HttpSession session = SessionUtils.getSession();
+			System.out.println(session.toString());
 			session.setAttribute("username", user);
 			return "test";
 		} else {
 			showRegisterBtn = true;
-			System.out.println(showRegisterBtn);
 			FacesContext.getCurrentInstance().addMessage(
 					null,
 					new FacesMessage(FacesMessage.SEVERITY_ERROR,
@@ -82,7 +65,6 @@ public class Login implements Serializable {
 
 	public String register() {
 		RegisterDao.register(user, pwd);
-			System.out.println(user.toString());
 			validateUsernamePassword();
 			showRegisterBtn = false;
 			return "test";
