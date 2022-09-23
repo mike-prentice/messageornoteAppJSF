@@ -22,7 +22,7 @@ import com.example.project.model.SessionUtils;
 import com.example.project.service.MessageService;
 
 @Named
-@RequestScoped
+@ViewScoped
 public class Bean implements Serializable {
 
 	private String message;
@@ -49,9 +49,8 @@ public class Bean implements Serializable {
 
 	@PostConstruct
 	public void init() {
-		System.out.println(SessionUtils.getUserName());
-		messages = messageDao.getMessages(SessionUtils.getUserName());
-
+		messages = messageService.list(SessionUtils.getUserName());
+		System.out.println(messages.get(0).getText());
 
 		sortBy = new ArrayList<>();
 		sortBy.add(SortMeta.builder().field("id").order(SortOrder.ASCENDING).build());

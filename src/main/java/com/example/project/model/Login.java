@@ -49,7 +49,6 @@ public class Login implements Serializable {
 		boolean valid = LoginDAO.validate(user, pwd);
 		if (valid) {
 			HttpSession session = SessionUtils.getSession();
-			System.out.println(session.toString());
 			session.setAttribute("username", user);
 			return "test";
 		} else {

@@ -46,13 +46,14 @@ public class MessageDAO {
 
 		try {
 			con = DataConnect.getConnection();
-			ps = con.prepareStatement("SELECT * FROM messages WHERE userName = ?");
+			ps = con.prepareStatement("Select * from messages where userName = ?");
 			ps.setString(1, user);
 
 			ResultSet rs = ps.executeQuery();
 			while (rs.next()) {
 				Message message = new Message();
 				message.setText(rs.getString("message"));
+				message.setId(rs.getLong("messageId"));
 				messages.add(message);
 
 			}
