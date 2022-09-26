@@ -24,12 +24,8 @@ public class MessageDAO {
 			ps.setString(1, user);
 			ps.setString(2, text);
 
-			ResultSet rs = ps.executeQuery();
+			ps.execute();
 
-			if (rs.next()) {
-				// result found, means valid inputs
-				return true;
-			}
 		} catch (SQLException ex) {
 			System.out.println("Login error -->" + ex.getMessage());
 			return false;

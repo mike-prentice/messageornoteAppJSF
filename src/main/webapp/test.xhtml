@@ -24,7 +24,7 @@
         <p:inputText
           id="inputMessage"
           class="inputfield"
-          
+          value="#{bean.message.text}"
           required="true"
         >
           <f:validateLength minimum="2" />
@@ -32,7 +32,7 @@
         <p:message id="input_m" for="inputMessage" />
         <p:commandButton
           value="Add Message"
-          action="#{bean.submit()}"
+          action="#{bean.submit(bean.message.text, login.user)}"
         >
         </p:commandButton>
       </h:form>

@@ -25,11 +25,11 @@ import com.example.project.service.MessageService;
 @ViewScoped
 public class Bean implements Serializable {
 
-	private String message;
+	private Message message = new Message();
 	private List<Message> messages;
 	private List<SortMeta> sortBy;
 	private Message selectedMessage;
-	private String userName;
+	
 
 	@Inject
 	private MessageService messageService;
@@ -50,7 +50,8 @@ public class Bean implements Serializable {
 	@PostConstruct
 	public void init() {
 		messages = messageService.list(SessionUtils.getUserName());
-		System.out.println(messages.get(0).getText());
+		message = new Message();
+		//System.out.println(messages.get(0).getText());
 
 		sortBy = new ArrayList<>();
 		sortBy.add(SortMeta.builder().field("id").order(SortOrder.ASCENDING).build());
@@ -58,9 +59,11 @@ public class Bean implements Serializable {
 		sortBy.add(SortMeta.builder().field("text").order(SortOrder.ASCENDING).priority(1).build());
 	}
 
-	public String submit() {
-		messageDao.saveMessage(userName, message);
-		//messages.add(message,userName);
+	public String submit(String userName, String text) {
+		System.out.println(userName);
+		System.out.println(text);
+		messageService.create(text, userName);
+		//messages.add(message);
 		//message = new Message();
 		FacesContext.getCurrentInstance().addMessage("inputForm:inputMessage", new FacesMessage("Message Added!"));
 		return "/test.xhtml?faces-redirect=true";
@@ -96,6 +99,14 @@ public class Bean implements Serializable {
 	public String getSessionId() {
 		String id = SessionUtils.getUserId();
 		return id;
+	}
+
+	public void setMessage(Message message) {
+		this.message = message;
+	}
+
+	public Message getMessage() {
+		return message;
 	}
 
 }

@@ -20,8 +20,8 @@ public class MessageService {
 	@PersistenceContext
 	private EntityManager entityManager;
 
-	public void create(Message message) {
-		entityManager.persist(message);
+	public void create(String user, String text) {
+		messageDAO.saveMessage(user, text);
 	}
 
 	public List<Message> list(String user) {
@@ -29,9 +29,9 @@ public class MessageService {
 		return messageDAO.getMessages(user);
 	}
 
-	public List<Message> listUserMessages() {
-		return entityManager.createQuery("SELECT messages FROM Message m JOIN users u ON u.id = m.id", Message.class).getResultList();
-	}
+	// public List<Message> listUserMessages() {
+	// 	return entityManager.createQuery("SELECT messages FROM Message m JOIN users u ON u.id = m.id", Message.class).getResultList();
+	// }
 
 	public void delete(Long id) {
 		Message message = findById(id);
