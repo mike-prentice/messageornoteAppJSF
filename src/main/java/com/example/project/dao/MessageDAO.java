@@ -14,6 +14,8 @@ import com.example.project.util.DataConnect;
 
 @Stateless
 public class MessageDAO {
+	List<Message> messages = new ArrayList<>();
+
 	public boolean saveMessage(String user, String text) {
 		Connection con = null;
 		PreparedStatement ps = null;
@@ -38,7 +40,7 @@ public class MessageDAO {
 	public List<Message> getMessages(String user) {
 		Connection con = null;
 		PreparedStatement ps = null;
-		List<Message> messages = new ArrayList<>();
+		messages.clear();
 
 		try {
 			con = DataConnect.getConnection();
@@ -63,5 +65,46 @@ public class MessageDAO {
 			}
 		}
 		return messages;
+	}
+
+	public boolean deleteMessage(Long id) {
+		Connection con = null;
+		PreparedStatement ps = null;
+
+		try {
+			con = DataConnect.getConnection();
+			ps = con.prepareStatement("DELETE FROM Messages WHERE messageId = ?");
+			ps.setLong(1, id);
+
+			ps.execute();
+
+		} catch (SQLException ex) {
+			System.out.println("Delete error -->" + ex.getMessage());
+			return false;
+		} finally {
+			DataConnect.close(con);
+		}
+		return false;
+	}
+
+	public boolean updateMessage(Long id, String text) {
+		Connection con = null;
+		PreparedStatement ps = null;
+
+		try {
+			con = DataConnect.getConnection();
+			ps = con.prepareStatement("UPDATE Messages SET message = ? WHERE messageId = ?");
+			ps.setString(1, text);
+			ps.setLong(2, id);
+
+			ps.execute();
+
+		} catch (SQLException ex) {
+			System.out.println("Update error -->" + ex.getMessage());
+			return false;
+		} finally {
+			DataConnect.close(con);
+		}
+		return false;
 	}
 }

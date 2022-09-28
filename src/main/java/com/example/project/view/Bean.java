@@ -5,7 +5,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import javax.annotation.PostConstruct;
-import javax.enterprise.context.RequestScoped;
 import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
 import javax.faces.view.ViewScoped;
@@ -16,43 +15,30 @@ import org.primefaces.PrimeFaces;
 import org.primefaces.model.SortMeta;
 import org.primefaces.model.SortOrder;
 
-import com.example.project.dao.MessageDAO;
 import com.example.project.model.Message;
-import com.example.project.model.SessionUtils;
 import com.example.project.service.MessageService;
 
-@Named
+@Named("bean")
 @ViewScoped
 public class Bean implements Serializable {
 
-	private Message message = new Message();
+	private Message message;
 	private List<Message> messages;
 	private List<SortMeta> sortBy;
 	private Message selectedMessage;
 	
-
 	@Inject
 	private MessageService messageService;
-	private MessageDAO messageDao;
 	
-	
-	
-
 	public void setMessageService(MessageService messageService) {
 		this.messageService = messageService;
 	}
 
-	public void setMessageDao(MessageDAO messageDao) {
-		this.messageDao = messageDao;
-	}
-
-
 	@PostConstruct
 	public void init() {
-		messages = messageService.list(SessionUtils.getUserName());
+		messages = messageService.getList();
 		message = new Message();
-		//System.out.println(messages.get(0).getText());
-
+		
 		sortBy = new ArrayList<>();
 		sortBy.add(SortMeta.builder().field("id").order(SortOrder.ASCENDING).build());
 
@@ -60,28 +46,33 @@ public class Bean implements Serializable {
 	}
 
 	public String submit(String userName, String text) {
-		System.out.println(userName);
-		System.out.println(text);
 		messageService.create(text, userName);
-		//messages.add(message);
-		//message = new Message();
 		FacesContext.getCurrentInstance().addMessage("inputForm:inputMessage", new FacesMessage("Message Added!"));
 		return "/test.xhtml?faces-redirect=true";
 	}
 
 	public void save(Long id, String text) {
-		messageService.save(id, text);
+		messageService.updateMessage(id, text);
 		PrimeFaces.current().ajax().update("tableForm:table");
 	}
 
 	public void deleteMessage() {
+		messageService.delete(this.selectedMessage.getId());
 		this.messages.remove(this.selectedMessage);
 		this.selectedMessage = null;
 		PrimeFaces.current().ajax().update("tableForm:table");
 	}
 
-	public List<Message> getMessages() {
-		return messages;
+	public List<SortMeta> getSortBy() {
+		return sortBy;
+	}
+
+	public Message getMessage() {
+		return message;
+	}
+
+	public void setMessage(Message message) {
+		this.message = message;
 	}
 
 	public Message getSelectedMessage() {
@@ -92,21 +83,8 @@ public class Bean implements Serializable {
 		this.selectedMessage = selectedMessage;
 	}
 
-	public List<SortMeta> getSortBy() {
-		return sortBy;
-	}
-
-	public String getSessionId() {
-		String id = SessionUtils.getUserId();
-		return id;
-	}
-
-	public void setMessage(Message message) {
-		this.message = message;
-	}
-
-	public Message getMessage() {
-		return message;
+	public List<Message> getMessages() {
+		return messages;
 	}
 
 }

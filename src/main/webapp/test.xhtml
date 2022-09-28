@@ -40,7 +40,7 @@
         <p:dataTable
           id="table"
           value="#{bean.messages}"
-          var="message"
+          var="usermessage"
           rowKey="#{message.id}"
           paginator="true"
           paginatorPosition="top"
@@ -51,11 +51,11 @@
           multiViewState="true"
         >
           <f:facet name="header" id="table-header">Your Messages</f:facet>
-          <p:column headerText="Id" sortBy="#{message.id}">
-            <h:outputText value="#{message.id}" />
+          <p:column headerText="Id" sortBy="#{usermessage.id}">
+            <h:outputText value="#{usermessage.id}" />
           </p:column>
-          <p:column headerText="Message" sortBy="#{message.text}">
-            <h:outputText value="#{message.text}" />
+          <p:column headerText="Message" sortBy="#{usermessage.text}">
+            <h:outputText value="#{usermessage.text}" />
           </p:column>
 
           <p:column>
@@ -66,7 +66,7 @@
               icon="pi pi-pencil"
             >
               <f:setPropertyActionListener
-                value="#{message}"
+                value="#{usermessage}"
                 target="#{bean.selectedMessage}"
               />
             </p:commandButton>
@@ -76,7 +76,7 @@
               oncomplete="PF('deleteDialog').show();"
             >
               <f:setPropertyActionListener
-                value="#{message}"
+                value="#{usermessage}"
                 target="#{bean.selectedMessage}"
               />
             </p:commandButton>

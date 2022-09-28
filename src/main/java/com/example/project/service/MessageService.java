@@ -1,55 +1,45 @@
 package com.example.project.service;
 
+import java.util.ArrayList;
 import java.util.List;
 
+import javax.annotation.PostConstruct;
 import javax.ejb.Stateless;
-import javax.persistence.EntityManager;
-import javax.persistence.PersistenceContext;
-import javax.persistence.Query;
-
 
 import com.example.project.dao.MessageDAO;
 import com.example.project.model.Message;
+import com.example.project.model.SessionUtils;
 
 @Stateless
 public class MessageService {
 
-	
+	List<Message> list = new ArrayList<>();
 	MessageDAO messageDAO = new MessageDAO();
 
-	@PersistenceContext
-	private EntityManager entityManager;
+	@PostConstruct
+	public void init() {
+		list = messageDAO.getMessages(SessionUtils.getUserName());
+	}
 
 	public void create(String user, String text) {
 		messageDAO.saveMessage(user, text);
 	}
 
-	public List<Message> list(String user) {
-		
-		return messageDAO.getMessages(user);
-	}
-
-	// public List<Message> listUserMessages() {
-	// 	return entityManager.createQuery("SELECT messages FROM Message m JOIN users u ON u.id = m.id", Message.class).getResultList();
-	// }
-
 	public void delete(Long id) {
-		Message message = findById(id);
-		entityManager.remove(message);
+		messageDAO.deleteMessage(id);
 	}
 
-	public void save(Long id, String text) {
-		Message message = findById(id);
-		message.setText(text);
-		entityManager.merge(message);
-				
+	public void updateMessage(Long id, String text) {
+		messageDAO.updateMessage(id, text);
+
+	}
+	
+	public List<Message> getList() {
+		return list;
 	}
 
-	public Message findById(Long id) {
-		Query findOne = entityManager.createQuery("Select m From Message m WHERE m.id = :id");
-		findOne.setParameter("id", id);
-		return (Message) findOne.getSingleResult();
-
+	public void setList(List<Message> list) {
+		this.list = list;
 	}
 
 }

@@ -4,16 +4,9 @@ import java.io.Serializable;
 
 import javax.enterprise.context.SessionScoped;
 import javax.inject.Named;
-
-
-import com.example.project.dao.MessageDAO;
-
 @Named
 @SessionScoped
 public class Message implements Serializable {
-
-	MessageDAO messageDAO = new MessageDAO();
-
 	private static final long serialVersionUID = 1L;
 
 	private Long id;
@@ -67,8 +60,4 @@ public class Message implements Serializable {
 		return true;
 	}
 
-	public void createMessage(String userName, String text) {
-		messageDAO.saveMessage(userName, text);
-	}
-	
 }
